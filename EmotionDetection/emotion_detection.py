@@ -11,35 +11,47 @@ def emotion_detector(text_to_analyse):
 
     response = requests.post(url,json = myobj,headers = header)
 
-    formatted_response = json.loads(response.text)
+    if response.status_code == 200:
+        
+        formatted_response = json.loads(response.text)
 
-    anger_score = formatted_response['emotionPredictions'][0]['emotion']['anger']
+        anger_score = formatted_response['emotionPredictions'][0]['emotion']['anger']
 
-    disgust_score = formatted_response['emotionPredictions'][0]['emotion']['disgust']
+        disgust_score = formatted_response['emotionPredictions'][0]['emotion']['disgust']
 
-    fear_score = formatted_response['emotionPredictions'][0]['emotion']['fear']
+        fear_score = formatted_response['emotionPredictions'][0]['emotion']['fear']
 
-    joy_score = formatted_response['emotionPredictions'][0]['emotion']['joy']
+        joy_score = formatted_response['emotionPredictions'][0]['emotion']['joy']
 
-    sadness_score = formatted_response['emotionPredictions'][0]['emotion']['sadness']
+        sadness_score = formatted_response['emotionPredictions'][0]['emotion']['sadness']
 
-    dominance = {
-        'anger': anger_score,
-        'disgust': disgust_score,
-        'fear': fear_score,
-        'joy': joy_score,
-        'sadness': sadness_score,
-    }
-
-    dominant_emotion = max(dominance,key = dominance.get)
-    
-    formatted_output = {
-        'anger': anger_score,
-        'disgust': disgust_score,
-        'fear': fear_score,
-        'joy': joy_score,
-        'sadness': sadness_score,
-        'dominant_emotion': dominant_emotion
+        dominance = {
+            'anger': anger_score,
+            'disgust': disgust_score,
+            'fear': fear_score,
+            'joy': joy_score,
+            'sadness': sadness_score,
         }
-    return formatted_output
+
+        dominant_emotion = max(dominance,key = dominance.get)
+    
+        formatted_output = {
+            'anger': anger_score,
+            'disgust': disgust_score,
+            'fear': fear_score,
+            'joy': joy_score,
+            'sadness': sadness_score,
+            'dominant_emotion': dominant_emotion
+            }
+        return formatted_output
+    else:
+        formatted_output = {
+            'anger': None,
+            'disgust': None,
+            'fear': None,
+            'joy': None,
+            'sadness': None,
+            'dominant_emotion': None
+            }
+        return formatted_output
 
